@@ -21,5 +21,6 @@ class Games extends Model
         'player_o',
         'in_progress',
         'winner',
+        'created_at',
     ];
 }
