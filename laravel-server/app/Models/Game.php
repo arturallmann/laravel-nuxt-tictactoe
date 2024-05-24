@@ -19,8 +19,7 @@ class Game extends Model
         'id',
         'player_x',
         'player_o',
-        'in_progress',
+        'game_state',
         'winner',
-        'created_at',
     ];
 }

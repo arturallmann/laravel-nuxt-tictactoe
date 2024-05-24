@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('player_x', 50);
             $table->string('player_o', 50);
-            $table->boolean('in_progress')->default(true);
+            $table->string('game_state')->default("in progress");
             $table->string('winner', 50)->nullable();
-            $table->timestamps('created_at');
+            $table->timestamps();
         });
     }
 
