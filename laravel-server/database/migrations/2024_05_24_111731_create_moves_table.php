@@ -16,11 +16,12 @@ return new class extends Migration
     {
         Schema::create('moves', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Game::class, );
-            $table->string('player', 50);
+            $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
+            $table->string('player');
             $table->integer('location');
             $table->integer('order');
-            $table->timestamps('time_stamp');
+            $table->timestamp('move_timestamp')->nullable();
+            $table->timestamps();
         });
     }
 
