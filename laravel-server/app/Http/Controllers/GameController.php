@@ -39,4 +39,13 @@ class GameController extends Controller
 
         return response()->json(['message'=> 'Game updated successfully'], 201);
     }
+    //DELETE(/api/games/{id})
+    public function destroy($id)
+    {
+        $game = Game::findOrFail($id);
+
+        $game->delete();
+
+        return response()->json(['message'=>'Game deleted successfully'], 201);
+    }
 }

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 route::post('/games', [GameController::class, 'createGame']);
 route::get('/games', [GameController::class, 'index']);
 route::patch('/games/{id}', [GameController::class, 'update']);
+route::delete('/games/{id}', [GameController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
