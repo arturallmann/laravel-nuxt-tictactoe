@@ -16,15 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //Games Routes
-route::post('/game', [GameController::class, 'createGame']);
-route::get('/game', [GameController::class, 'index']);
-route::patch('/game/{id}', [GameController::class, 'update']);
-route::delete('/game/{id}', [GameController::class, 'destroy']);
+route::post('/games', [GameController::class, 'createGame']);
+route::get('/games', [GameController::class, 'index']);
+route::patch('/games/{id}', [GameController::class, 'update']);
+route::delete('/games/{id}', [GameController::class, 'destroy']);
 
 //Move Routes
-route::post('/move', [MoveController::class, 'createMove']);
-route::get('/move', [MoveController::class, 'index']);
-route::delete('/move/{id}', [MoveController::class, 'destroy']);
+route::post('/games/{id}/moves', [MoveController::class, 'createMove']);
+Route::get('/games/{id}/moves', [MoveController::class, 'getMovesByGame']);
+route::delete('/moves/{id}', [MoveController::class, 'deleteMove']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

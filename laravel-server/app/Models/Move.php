@@ -16,12 +16,14 @@ class Move extends Model
      */
 
     protected $fillable = [
-        'id',
         'games_id',
         'player',
         'location',
         'order',
         'time_stamp',
     ];
-
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
 }

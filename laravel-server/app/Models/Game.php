@@ -22,4 +22,8 @@ class Game extends Model
         'game_state',
         'winner',
     ];
+    public function moves()
+    {
+        return $this->hasMany(Move::class);
+    }
 }
