@@ -1,5 +1,5 @@
 <template>
-  <div class="square" @click="handleClick">
+  <div class="square" @click="handleClick" :class="{ disabled: value !== '' }">
     {{ value }}
   </div>
 </template>
@@ -19,8 +19,10 @@ export default {
   },
   methods: {
     handleClick() {
-      console.log(`Square clicked: ${this.index}`); // Debugging log
-      this.$emit('square-clicked', this.index);
+      //check if the square is empty
+      if (this.value === '') {
+        this.$emit('square-clicked', this.index);
+      }
     },
   },
 };
