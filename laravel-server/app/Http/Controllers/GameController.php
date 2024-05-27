@@ -14,7 +14,8 @@ class GameController extends Controller
 
         $game->player_x = $request->input('player_x');
         $game->player_o = $request->input('player_o');
-        $game->game_state = "in progress";
+        $game->game_state = $request->input('game_state');
+        $game->winner= $request->input('winner');
         $game->save();
 
         return response()->json(['message' => 'Game added successfully'], 201);
