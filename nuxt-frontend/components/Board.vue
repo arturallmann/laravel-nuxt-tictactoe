@@ -5,6 +5,7 @@
       :key="index"
       :value="square"
       :index="index"
+      :class="{ disabled: currentPlayer !== 'X' }"
       @square-clicked="handleSquareClick"
     />
   </div>
@@ -35,11 +36,28 @@ export default {
       console.log(`Square click handled: ${index}`);
       if (this.squares[index] === '') {
         this.squares[index] = this.currentPlayer;
-        if (this.checkForWin()) {
-          //TODO: disable all other inputs
+
+        const winner = this.checkForWin();
+        if (winner) {
+          this.disableBoard();
+          if (winner === 'X') {
+            //TODO: disable all other inputs
+            this.postGame('player', 'computer', 'win', 'player');
+          } else if (winner === 'O') {
+            this.postGame('player', 'computer', 'loss', 'computer');
+          }
+        } else if (this.checkForDraw()) {
+          this.postGame('player', 'computer', 'draw', null);
         }
+
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }
+    },
+    disableBoard() {
+      // Disable all squares by setting them to a non-empty value
+      this.squares = this.squares.map((square) =>
+        square === '' ? '-' : square
+      );
     },
     checkForWin() {
       //check if rows have a win
@@ -48,7 +66,7 @@ export default {
         let s2 = this.squares[i + 1];
         let s3 = this.squares[i + 2];
         if (s1 == s2 && s2 == s3 && s1 != '') {
-          alert(s1 + ' Wins!');
+          return s1;
         }
       }
       //check if columns have a win
@@ -57,7 +75,7 @@ export default {
         let s2 = this.squares[i + 3];
         let s3 = this.squares[i + 6];
         if (s1 == s2 && s2 == s3 && s1 != '') {
-          alert(s1 + ' Wins!');
+          return s1;
         }
       }
       //check if diagonals have a win
@@ -65,17 +83,32 @@ export default {
       let s2 = this.squares[4];
       let s3 = this.squares[8];
       if (s1 == s2 && s2 == s3 && s1 != '') {
-        alert(s1 + ' Wins!');
+        return s1;
       }
       let s4 = this.squares[2];
       let s5 = this.squares[6];
       if (s2 == s4 && s4 == s5 && s2 != '') {
-        alert(s2 + ' Wins!');
+        return s2;
       }
+    },
+    checkForDraw() {
+      // Check if all squares are filled
+      return this.squares.every((square) => square !== '');
     },
     restartGame() {
       this.squares = Array(9).fill('');
       this.currentPlayer = startSide();
+    },
+    postGame(player_x, player_o, game_state, winner) {
+      const { data } = $fetch('http://localhost:8000/api/games', {
+        method: 'POST',
+        body: {
+          player_x: player_x,
+          player_o: player_o,
+          game_state: game_state,
+          winner: winner,
+        },
+      });
     },
   },
 };
