@@ -8,14 +8,16 @@
       @square-clicked="handleSquareClick"
     />
   </div>
+  <button @click="restartGame" class="restart">Restart game</button>
 </template>
 
 <script>
 import Square from './Square.vue';
 import TurnIndicator from './TurnIndicator.vue';
-//randomly chooses which symbol starts the game.
-const startingSide = Math.round(Math.random(0, 1)) === 1 ? 'X' : 'O';
-
+const startSide = () => {
+  let startingSide = Math.round(Math.random(0, 1)) === 1 ? 'X' : 'O';
+  return startingSide;
+};
 export default {
   name: 'Board',
   components: {
@@ -25,7 +27,7 @@ export default {
   data() {
     return {
       squares: Array(9).fill(''),
-      currentPlayer: startingSide,
+      currentPlayer: startSide(),
     };
   },
   methods: {
@@ -35,6 +37,10 @@ export default {
         this.squares[index] = this.currentPlayer;
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }
+    },
+    restartGame() {
+      this.squares = Array(9).fill('');
+      this.currentPlayer = startSide();
     },
   },
 };
