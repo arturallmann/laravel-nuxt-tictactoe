@@ -35,7 +35,42 @@ export default {
       console.log(`Square click handled: ${index}`);
       if (this.squares[index] === '') {
         this.squares[index] = this.currentPlayer;
+        if (this.checkForWin()) {
+          //TODO: disable all other inputs
+        }
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+      }
+    },
+    checkForWin() {
+      //check if rows have a win
+      for (let i = 0; i <= 8; i += 3) {
+        let s1 = this.squares[i];
+        let s2 = this.squares[i + 1];
+        let s3 = this.squares[i + 2];
+        if (s1 == s2 && s2 == s3 && s1 != '') {
+          alert(s1 + ' Wins!');
+        }
+      }
+      //check if columns have a win
+      for (let i = 0; i <= 3; i++) {
+        let s1 = this.squares[i];
+        let s2 = this.squares[i + 3];
+        let s3 = this.squares[i + 6];
+        if (s1 == s2 && s2 == s3 && s1 != '') {
+          alert(s1 + ' Wins!');
+        }
+      }
+      //check if diagonals have a win
+      let s1 = this.squares[0];
+      let s2 = this.squares[4];
+      let s3 = this.squares[8];
+      if (s1 == s2 && s2 == s3 && s1 != '') {
+        alert(s1 + ' Wins!');
+      }
+      let s4 = this.squares[2];
+      let s5 = this.squares[6];
+      if (s2 == s4 && s4 == s5 && s2 != '') {
+        alert(s2 + ' Wins!');
       }
     },
     restartGame() {
