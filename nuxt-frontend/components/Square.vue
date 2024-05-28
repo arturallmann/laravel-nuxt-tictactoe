@@ -1,21 +1,14 @@
 <template>
-  <div class="square" @click="handleClick" :class="{ disabled: value !== '' }">
-    {{ value }}
-  </div>
+  <button class="square" @click="handleClick" :disabled='disabled'">{{ value }}</button>
 </template>
 
 <script>
 export default {
   name: 'Square',
   props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
+    value: String,
+    index: Number,
+    disabled: Boolean
   },
   methods: {
     handleClick() {
