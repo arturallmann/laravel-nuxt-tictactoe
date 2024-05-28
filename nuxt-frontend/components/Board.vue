@@ -16,10 +16,7 @@
 
 <script>
 import Square from './Square.vue';
-const startSide = () => {
-  let startingSide = Math.round(Math.random(0, 1)) === 1 ? 'X' : 'O';
-  return startingSide;
-};
+
 export default {
   name: 'Board',
   components: {
@@ -28,32 +25,56 @@ export default {
   data() {
     return {
       squares: Array(9).fill(''),
-      currentPlayer: startSide(),
+      currentPlayer: '',
       boardDisabled: false,
     };
+  },
+  created() {
+    this.startSide();
   },
   methods: {
     handleSquareClick(index) {
       console.log(`Square click handled: ${index}`);
-      if (this.squares[index] === '' && !this.boardDisabled) {
+      if (
+        this.squares[index] === '' &&
+        !this.boardDisabled &&
+        this.currentPlayer === 'X'
+      ) {
         this.squares[index] = this.currentPlayer;
 
         const winner = this.checkForWin();
 
         if (winner) {
-          this.boardDisabled = true;
-
-          if (winner === 'X') {
-            this.postGame('player', 'computer', 'win', 'player');
-          } else if (winner === 'O') {
-            this.postGame('player', 'computer', 'loss', 'computer');
-          }
+          this.gameEnd(winner);
         } else if (this.checkForDraw()) {
-          this.postGame('player', 'computer', 'draw', null);
-          this.boardDisabled = true;
+          this.gameEnd();
+        } else {
+          this.currentPlayer = 'O';
+          this.computerPlay();
         }
-
-        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+      }
+    },
+    startSide() {
+      let startingSide = Math.round(Math.random(0, 1)) === 1 ? 'X' : 'O';
+      this.currentPlayer = startingSide;
+      console.log(startingSide + ' is starting the game');
+      if (startingSide === 'O') {
+        this.computerPlay();
+      }
+    },
+    gameEnd(winner = null) {
+      this.boardDisabled = true;
+      if (!winner) {
+        console.log('draw!');
+        this.postGame('player', 'computer', 'draw', null);
+      } else if (winner) {
+        console.log(winner + ' wins!');
+        this.postGame(
+          'player',
+          'computer',
+          'win',
+          winner === 'X' ? 'player' : 'computer'
+        );
       }
     },
     checkForWin() {
@@ -94,19 +115,43 @@ export default {
     },
     restartGame() {
       this.squares = Array(9).fill('');
-      this.currentPlayer = startSide();
+      this.startSide();
       this.boardDisabled = false;
     },
+    computerPlay() {
+      setTimeout(() => {
+        let moveMade = false;
+        for (let i = 0; i <= 8; i++) {
+          if (this.squares[i] === '') {
+            this.squares[i] = 'O';
+            this.currentPlayer = 'X';
+            moveMade = true;
+            break;
+          }
+        }
+        if (moveMade) {
+          const winner = this.checkForWin();
+          if (winner) {
+            this.gameEnd(winner);
+          } else if (this.checkForDraw()) {
+            this.gameEnd();
+          } else {
+            this.currentPlayer = 'X';
+          }
+        }
+      }, 500);
+    },
     postGame(player_x, player_o, game_state, winner) {
-      const { data } = $fetch('http://localhost:8000/api/games', {
-        method: 'POST',
-        body: {
-          player_x: player_x,
-          player_o: player_o,
-          game_state: game_state,
-          winner: winner,
-        },
-      });
+      //currently disabled so database doesn't fill up
+      // const { data } = $fetch('http://localhost:8000/api/games', {
+      //   method: 'POST',
+      //   body: {
+      //     player_x: player_x,
+      //     player_o: player_o,
+      //     game_state: game_state,
+      //     winner: winner,
+      //   },
+      // });
     },
   },
 };
