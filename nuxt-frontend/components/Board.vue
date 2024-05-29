@@ -167,4 +167,8 @@ export default {
   max-width: 70%; /* Adjust as necessary */
   max-height: 70%; /* Adjust as necessary */
 }
+.restart {
+  background-color: #bfffbc;
+  border-radius: 5px;
+}
 </style>

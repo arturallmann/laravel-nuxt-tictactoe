@@ -25,7 +25,7 @@ export default {
 .square {
   width: 200px;
   height: 200px;
-  background-color: #fff;
+  background-color: #A6FFA1;
   border: 1px solid #000;
   display: flex;
   align-items: center;

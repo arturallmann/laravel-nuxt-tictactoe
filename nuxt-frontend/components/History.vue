@@ -5,7 +5,8 @@
       <li v-for="game in games" :key="game.id">
         <div class="history-item">
           <p>Game State: {{ game.game_state }}</p>
-          <p>Winner: {{ game.winner }}</p>
+          <p v-if="game.winner">Winner: {{ game.winner }}</p>
+          <p v-else></p>
           <p>Created At: {{ new Date(game.created_at).toLocaleString() }}</p>
         </div>
       </li>
@@ -31,7 +32,7 @@ const games = computed(() => data.value?.games || []);
 .history-item {
   border: 1px solid black;
   border-radius: 10px;
-  background-color: white;
+  background-color: #a8aec1;
 }
 .history-item p {
   padding-left: 5px;

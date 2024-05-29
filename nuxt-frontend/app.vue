@@ -15,7 +15,7 @@ useSeoMeta({
 
 <style>
 #app {
-  background-color: #396653;
-  color: #00dc82;
+  background-color: #b5d2cb;
+  color: #a8aec1;
 }
 </style>
