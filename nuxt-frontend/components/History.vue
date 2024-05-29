@@ -4,7 +4,7 @@
     <ul v-if="games && games.length">
       <li v-for="game in games" :key="game.id">
         <div class="history-item">
-          <p>Game State: {{ game.game_state }}</p>
+          <p>Result: {{ game.game_state }}</p>
           <p v-if="game.winner">Winner: {{ game.winner }}</p>
           <p v-else></p>
           <p>Created At: {{ new Date(game.created_at).toLocaleString() }}</p>
@@ -26,7 +26,7 @@ const games = computed(() => data.value?.games || []);
 <style scoped>
 .games-history {
   margin: 20px;
-  max-height: 80%;
+  max-height: 80vh;
   overflow-y: scroll;
 }
 .history-item {

@@ -1,5 +1,8 @@
 <template>
   <div class="board-container">
+    <div class="turn-indicator">
+      <p>{{ gameState }}</p>
+    </div>
     <div class="board">
       <Square
         v-for="(square, index) in squares"
@@ -27,6 +30,7 @@ export default {
       squares: Array(9).fill(''),
       currentPlayer: '',
       boardDisabled: false,
+      gameState: '',
     };
   },
   created() {
@@ -50,6 +54,7 @@ export default {
           this.gameEnd();
         } else {
           this.currentPlayer = 'O';
+          this.gameState = "O's Turn";
           this.computerPlay();
         }
       }
@@ -57,6 +62,8 @@ export default {
     startSide() {
       let startingSide = Math.round(Math.random(0, 1)) === 1 ? 'X' : 'O';
       this.currentPlayer = startingSide;
+      this.gameState = startingSide + "'s Turn";
+
       console.log(startingSide + ' is starting the game');
       if (startingSide === 'O') {
         this.computerPlay();
@@ -65,9 +72,11 @@ export default {
     gameEnd(winner = null) {
       this.boardDisabled = true;
       if (!winner) {
+        this.gameState = 'Draw!';
         console.log('draw!');
         this.postGame('player', 'computer', 'draw', null);
       } else if (winner) {
+        this.gameState = winner + ' Wins!';
         console.log(winner + ' wins!');
         this.postGame(
           'player',
@@ -137,6 +146,7 @@ export default {
             this.gameEnd();
           } else {
             this.currentPlayer = 'X';
+            this.gameState = "X's Turn";
           }
         }
       }, 500);
@@ -158,14 +168,27 @@ export default {
 </script>
 
 <style scoped>
+.board-container {
+  width: 39rem;
+  padding: 20px;
+}
+.turn-indicator {
+  margin-left: 10rem;
+  margin-right: 10rem;
+  width: 50%;
+  height: 10%;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+}
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 200px);
-  gap: 5px;
+  grid-template-columns: repeat(3, 12.5rem);
+  gap: 0.5rem;
   width: 100%;
   height: 100%;
-  max-width: 70%; /* Adjust as necessary */
-  max-height: 70%; /* Adjust as necessary */
+  max-width: 80%; /* Adjust as necessary */
+  max-height: 80%; /* Adjust as necessary */
 }
 .restart {
   background-color: #bfffbc;
