@@ -153,7 +153,7 @@ export default {
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
-      const { data } = $fetch('http://localhost:8000/api/games', {
+      const { data } = $fetch('${$config.apiUrl}/api/games', {
         method: 'POST',
         body: {
           player_x: player_x,

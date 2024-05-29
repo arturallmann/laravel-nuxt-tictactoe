@@ -20,7 +20,7 @@ const {
   data,
   pending: isFetching,
   error,
-} = useFetch('http://localhost:8000/api/games');
+} = useFetch('${$config.apiUrl}/api/games');
 const games = computed(() => data.value?.games || []);
 </script>
 <style scoped>
