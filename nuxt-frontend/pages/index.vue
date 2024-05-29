@@ -1,10 +1,10 @@
 <script setup>
 // Or set at the page level
-import Board from "~/components/Board.vue";
+import Game from '~/components/Game.vue';
 </script>
 
 <template>
   <div>
-    <Board />
+    <Game />
   </div>
 </template>

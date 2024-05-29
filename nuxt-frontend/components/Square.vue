@@ -23,8 +23,8 @@ export default {
 
 <style scoped>
 .square {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   background-color: #fff;
   border: 1px solid #000;
   display: flex;
@@ -32,6 +32,7 @@ export default {
   justify-content: center;
   font-size: 24px;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .square:hover {

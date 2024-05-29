@@ -143,15 +143,15 @@ export default {
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
-      // const { data } = $fetch('http://localhost:8000/api/games', {
-      //   method: 'POST',
-      //   body: {
-      //     player_x: player_x,
-      //     player_o: player_o,
-      //     game_state: game_state,
-      //     winner: winner,
-      //   },
-      // });
+      const { data } = $fetch('http://localhost:8000/api/games', {
+        method: 'POST',
+        body: {
+          player_x: player_x,
+          player_o: player_o,
+          game_state: game_state,
+          winner: winner,
+        },
+      });
     },
   },
 };
@@ -160,10 +160,11 @@ export default {
 <style scoped>
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
+  grid-template-columns: repeat(3, 200px);
   gap: 5px;
-  background-color: darkgrey;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-width: 70%; /* Adjust as necessary */
+  max-height: 70%; /* Adjust as necessary */
 }
 </style>
