@@ -215,10 +215,4 @@ return [
 
 
 // Ensure cache and sessions are handled properly
-    'cache' => [
-        'driver' => env('CACHE_DRIVER', 'file'),
-    ],
-    'session' => [
-        'driver' => env('SESSION_DRIVER', 'file'),
-    ],
 ];

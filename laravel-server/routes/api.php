@@ -15,17 +15,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Games Routes
-route::post('/games', [GameController::class, 'createGame']);
-route::get('/games', [GameController::class, 'index']);
-route::patch('/games/{id}', [GameController::class, 'update']);
-route::delete('/games/{id}', [GameController::class, 'destroy']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 
-//Move Routes
-route::post('/games/{id}/moves', [MoveController::class, 'createMove']);
-Route::get('/games/{id}/moves', [MoveController::class, 'getMovesByGame']);
-route::delete('/moves/{id}', [MoveController::class, 'deleteMove']);
-
+Route::post('games', [GameController::class, 'createGame'])->middleware('auth:sanctum');
+Route::get('user/games', [GameController::class, 'getUserGames'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
