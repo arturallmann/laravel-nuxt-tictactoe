@@ -13,7 +13,6 @@ class User extends Model
         'id',
         'game_id',
         'username',
-        'password'
     ];
     public function games()
     {
