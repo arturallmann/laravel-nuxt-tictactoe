@@ -46,13 +46,13 @@ export default {
       ) {
         this.squares[index] = this.currentPlayer;
 
-        const winner = this.checkForWin();
+        const winner = this.checkForWin(this.squares);
 
         if (winner) {
           this.gameEnd(winner);
         } else if (this.checkForDraw()) {
           this.gameEnd();
-        } else {
+        } else if (!winner) {
           this.currentPlayer = 'O';
           this.gameState = "O's Turn";
           this.computerPlay();
@@ -86,37 +86,30 @@ export default {
         );
       }
     },
-    checkForWin() {
-      //check if rows have a win
-      for (let i = 0; i <= 6; i += 3) {
-        let s1 = this.squares[i];
-        let s2 = this.squares[i + 1];
-        let s3 = this.squares[i + 2];
-        if (s1 == s2 && s2 == s3 && s1 != '') {
-          return s1;
+    //check if rows have a win
+    checkForWin(squares) {
+      const winningCombinations = [
+        [0, 1, 2], // Rows
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6], // Columns
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8], // Diagonals
+        [2, 4, 6],
+      ];
+
+      for (const combination of winningCombinations) {
+        const [a, b, c] = combination;
+        if (
+          squares[a] &&
+          squares[a] === squares[b] &&
+          squares[a] === squares[c]
+        ) {
+          return squares[a]; // Return the winning player ('X' or 'O')
         }
       }
-      //check if columns have a win
-      for (let i = 0; i <= 3; i++) {
-        let s1 = this.squares[i];
-        let s2 = this.squares[i + 3];
-        let s3 = this.squares[i + 6];
-        if (s1 == s2 && s2 == s3 && s1 != '') {
-          return s1;
-        }
-      }
-      //check if diagonals have a win
-      let s1 = this.squares[0];
-      let s2 = this.squares[4];
-      let s3 = this.squares[8];
-      if (s1 == s2 && s2 == s3 && s1 != '') {
-        return s1;
-      }
-      let s4 = this.squares[2];
-      let s5 = this.squares[6];
-      if (s2 == s4 && s4 == s5 && s2 != '') {
-        return s2;
-      }
+      return null; // No winner
     },
     checkForDraw() {
       // Check if all squares are filled
@@ -139,7 +132,7 @@ export default {
           }
         }
         if (moveMade) {
-          const winner = this.checkForWin();
+          const winner = this.checkForWin(this.squares);
           if (winner) {
             this.gameEnd(winner);
           } else if (this.checkForDraw()) {
@@ -153,7 +146,7 @@ export default {
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
-      const { data } = $fetch('${$config.apiUrl}/api/games', {
+      const { data } = useFetch('http://localhost:8000/api/games', {
         method: 'POST',
         body: {
           player_x: player_x,
@@ -180,8 +173,11 @@ export default {
   border: 1px solid black;
   border-radius: 5px;
   color: black;
+  text-align: center;
 }
+
 .board {
+  padding: 5px;
   display: grid;
   grid-template-columns: repeat(3, 12.5rem);
   gap: 0.5rem;
