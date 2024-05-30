@@ -22,8 +22,8 @@ class Game extends Model
         'game_state',
         'winner',
     ];
-    public function moves()
+    public function user()
     {
-        return $this->hasMany(Move::class);
+        return $this->belongsTo(User::class);
     }
 }

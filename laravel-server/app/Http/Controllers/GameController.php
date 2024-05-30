@@ -4,48 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
     //POST(/api/games)
     public function createGame(Request $request) {
 
+        $validatedData = $request->validate([
+            'player_x' => 'required|string',
+            'player_o' => 'required|string',
+            'game_state' => 'required|string',
+            'winner' => 'nullable|string',
+        ]);
         $game = new Game;
-
-        $game->player_x = $request->input('player_x');
-        $game->player_o = $request->input('player_o');
-        $game->game_state = $request->input('game_state');
-        $game->winner= $request->input('winner');
+        $game->user_id = Auth::id();
         $game->save();
 
-        return response()->json(['message' => 'Game added successfully'], 201);
+        return response()->json(['message' => 'Game added successfully', 'game_id' => $game->id], 201);
 
     }
-    //GET(/api/games)
-    public function index() {
-        $games = Game::all();
-
-        return response()->json(['games' => $games], 200);
-    }
-    //PUT(/api/games/{id})
-    public function update(Request $request, $id) {
-
-        $game = Game::findOrFail($id);
-        $data = $request->all();
-
-        $game->update($data);
-        $game->game_state = $request->input('game_state');
-        $game->winner= $request->input('winner');
-
-        return response()->json(['message'=> 'Game updated successfully'], 201);
-    }
-    //DELETE(/api/games/{id})
-    public function destroy($id)
+    public function getUserGames()
     {
-        $game = Game::findOrFail($id);
+        $user = Auth::user();
+        $games = $user->games;
 
-        $game->delete();
-
-        return response()->json(['message'=>'Game deleted successfully'], 201);
+        return response()->json($games);
     }
 }
