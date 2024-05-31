@@ -1,4 +1,3 @@
-version: "3.11"
 services:
   laravel:
     build:
@@ -12,8 +11,6 @@ services:
       - "8000:8000"
     volumes:
       - ./laravel-server:/var/www/html/laravel-server
-      - ./laravel-server/database:/var/www/html/laravel-server/database
-
     networks:
       - app-network
   nuxt:
