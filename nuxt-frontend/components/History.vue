@@ -15,19 +15,24 @@
     <p v-else-if="error">{{ error.message }}</p>
   </div>
 </template>
+
 <script setup>
 const {
   data,
   pending: isFetching,
   error,
-} = useFetch('${$config.apiUrl}/api/games');
+} = useFetch('http://localhost:8000/api/games');
 const games = computed(() => data.value?.games || []);
 </script>
+
 <style scoped>
 .games-history {
   margin: 20px;
   max-height: 80vh;
   overflow-y: scroll;
+}
+.games-history p {
+  max-width: 20vw;
 }
 .history-item {
   border: 1px solid black;

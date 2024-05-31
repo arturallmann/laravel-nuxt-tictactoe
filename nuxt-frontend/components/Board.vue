@@ -146,7 +146,7 @@ export default {
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
-      const { data } = useFetch(`${config.public.apiBase}/games`, {
+      const { data } = useFetch(`http://localhost:8000/api/games`, {
         method: 'POST',
         body: {
           player_x: player_x,
