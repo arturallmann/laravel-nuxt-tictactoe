@@ -4,37 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class GameController extends Controller
 {
-    public function getUserGames(Request $request)
-    {
-        $userId = Session::get('user_id');
-        if (!$userId) {
-            return response()->json(['message' => 'Not authenticated'], 401);
-        }
+    //POST(/api/games)
+    public function createGame(Request $request) {
 
-        $games = Game::where('user_id', $userId)->get();
+        $game = new Game;
 
-        return response()->json(['games' => $games], 200);
-    }
-
-    public function saveGame(Request $request)
-    {
-        $userId = Session::get('user_id');
-        if (!$userId) {
-            return response()->json(['message' => 'Not authenticated'], 401);
-        }
-
-        $game = new Game();
-        $game->user_id = $userId;
         $game->player_x = $request->input('player_x');
         $game->player_o = $request->input('player_o');
         $game->game_state = $request->input('game_state');
-        $game->winner = $request->input('winner');
+        $game->winner= $request->input('winner');
         $game->save();
 
-        return response()->json(['message' => 'Game saved successfully'], 201);
+        return response()->json(['message' => 'Game added successfully'], 201);
+
+    }
+    //GET(/api/games)
+    public function index() {
+        $games = Game::all();
+
+        return response()->json(['games' => $games], 200);
+    }
+    //PUT(/api/games/{id})
+    public function update(Request $request, $id) {
+
+        $game = Game::findOrFail($id);
+        $data = $request->all();
+
+        $game->update($data);
+        $game->game_state = $request->input('game_state');
+        $game->winner= $request->input('winner');
+
+        return response()->json(['message'=> 'Game updated successfully'], 201);
+    }
+    //DELETE(/api/games/{id})
+    public function destroy($id)
+    {
+        $game = Game::findOrFail($id);
+
+        $game->delete();
+
+        return response()->json(['message'=>'Game deleted successfully'], 201);
     }
 }

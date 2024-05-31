@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('users');
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('moves', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
+            $table->string('player');
+            $table->integer('location');
+            $table->integer('order');
+            $table->timestamp('move_timestamp')->nullable();
             $table->timestamps();
         });
     }
@@ -29,7 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
-        //
+        Schema::dropIfExists('moves');
     }
 };

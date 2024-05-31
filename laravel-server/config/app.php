@@ -212,7 +212,4 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
-
-
-// Ensure cache and sessions are handled properly
 ];

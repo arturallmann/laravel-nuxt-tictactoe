@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Game extends Model
+class Move extends Model
 {
     use HasFactory;
 
@@ -16,14 +16,14 @@ class Game extends Model
      */
 
     protected $fillable = [
-        'id',
-        'player_x',
-        'player_o',
-        'game_state',
-        'winner',
+        'games_id',
+        'player',
+        'location',
+        'order',
+        'time_stamp',
     ];
-    public function moves()
+    public function game()
     {
-        return $this->hasMany(Move::class);
+        return $this->belongsTo(Game::class);
     }
 }
