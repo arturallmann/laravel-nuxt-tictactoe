@@ -61,5 +61,43 @@ This API provides endpoints for managing tic tac toe games.
 
 ## Installation
 
-1. Clone this repository to your local machine.
-2. Rename the ".env.example" file to ".env"
+If Docker isn't working properly, some steps need to be done manually.
+
+1. **Clone Repository:**
+   ```bash
+   git clone https://github.com/arturallmann/laravel-nuxt-tictactoe
+   ```
+
+2. **Rename Environment File:**
+   Create ".env" from the ".env.example" file in the /laravel-server folder
+
+   
+4. **Install Dependencies and Migrate Database:**
+   ```bash
+   cd laravel-server/
+   composer install
+   php artisan migrate
+   php artisan serve
+   ```
+   if it asks to create a new database, then select 'yes'
+
+5. **Setup Nuxt Frontend:**
+   ```bash
+   cd ../nuxt-frontend/
+   npm install
+   npm run generate
+   npm run build
+   npm run start
+   ```
+
+***currently I didn't get it working properly, I couldn't figure it out due to time constraints.***
+
+6. **Run Docker Compose:**
+   ```bash
+   docker-compose up --build
+   ```
+
+7. **Access the Application:**
+   Open your web browser and go to [http://localhost:3000](http://localhost:3000) to play!
+
+
