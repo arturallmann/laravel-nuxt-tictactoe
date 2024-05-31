@@ -21,7 +21,9 @@ const {
   data,
   pending: isFetching,
   error,
-} = useFetch('http://localhost:8000/api/games');
+} = useFetch('http://localhost:8000/api/games', {
+  method: 'GET',
+});
 const games = computed(() => data.value?.games || []);
 </script>
 
@@ -43,7 +45,9 @@ const games = computed(() => data.value?.games || []);
   padding-left: 5px;
   color: black;
 }
-
+h1 {
+  color: black;
+}
 ul {
   list-style-type: none;
   padding: 0;

@@ -55,7 +55,7 @@ export default {
         } else if (!winner) {
           this.currentPlayer = 'O';
           this.gameState = "O's Turn";
-          this.computerPlay();
+          this.makeComputerMove();
         }
       }
     },
@@ -64,9 +64,8 @@ export default {
       this.currentPlayer = startingSide;
       this.gameState = startingSide + "'s Turn";
 
-      console.log(startingSide + ' is starting the game');
       if (startingSide === 'O') {
-        this.computerPlay();
+        this.makeComputerMove();
       }
     },
     gameEnd(winner = null) {
@@ -77,7 +76,6 @@ export default {
         this.postGame('player', 'computer', 'draw', null);
       } else if (winner) {
         this.gameState = winner + ' Wins!';
-        console.log(winner + ' wins!');
         this.postGame(
           'player',
           'computer',
@@ -120,29 +118,81 @@ export default {
       this.startSide();
       this.boardDisabled = false;
     },
-    computerPlay() {
+    makeComputerMove() {
+      this.boardDisabled = true;
       setTimeout(() => {
-        let moveMade = false;
-        for (let i = 0; i <= 8; i++) {
-          if (this.squares[i] === '') {
-            this.squares[i] = 'O';
-            this.currentPlayer = 'X';
-            moveMade = true;
-            break;
+        // Check if the computer can win in the next move
+        let winningMove = this.findWinningMove('O');
+        if (winningMove !== null) {
+          this.squares[winningMove] = 'O';
+        } else {
+          // Check if the player can win in the next move and block them
+          let blockingMove = this.findWinningMove('X');
+          if (blockingMove !== null) {
+            this.squares[blockingMove] = 'O';
+          } else {
+            // Choose the best available spot based on a simple scoring system
+            let bestMove = this.findBestMove();
+            this.squares[bestMove] = 'O';
           }
         }
-        if (moveMade) {
-          const winner = this.checkForWin(this.squares);
-          if (winner) {
-            this.gameEnd(winner);
-          } else if (this.checkForDraw()) {
-            this.gameEnd();
-          } else {
-            this.currentPlayer = 'X';
-            this.gameState = "X's Turn";
-          }
+        this.boardDisabled = false;
+        // Check for win or draw after computer's move
+        const winner = this.checkForWin(this.squares);
+        if (winner) {
+          this.gameEnd(winner);
+        } else if (this.checkForDraw()) {
+          this.gameEnd();
+        } else if (!winner) {
+          this.currentPlayer = 'X';
+          this.gameState = "X's Turn";
         }
       }, 500);
+    },
+
+    findWinningMove(letter) {
+      for (let i = 0; i < this.squares.length; i++) {
+        if (this.squares[i] === '') {
+          // Try making the move and check if it results in a win
+          this.squares[i] = letter;
+          if (this.checkForWin(this.squares) === letter) {
+            // Undo the move and return the winning move
+            this.squares[i] = '';
+            return i;
+          }
+          // Undo the move
+          this.squares[i] = '';
+        }
+      }
+      return null;
+    },
+
+    findBestMove() {
+      // A simple scoring system: prioritize center, corners, and then edges
+      const center = 4;
+      const corners = [0, 2, 6, 8];
+      const edges = [1, 3, 5, 7];
+
+      // Prioritize center
+      if (this.squares[center] === '') {
+        return center;
+      }
+
+      // Prioritize corners
+      for (let corner of corners) {
+        if (this.squares[corner] === '') {
+          return corner;
+        }
+      }
+
+      // Choose any available edge
+      for (let edge of edges) {
+        if (this.squares[edge] === '') {
+          return edge;
+        }
+      }
+      // No available spot (should not reach this point in a valid game)
+      return -1;
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
