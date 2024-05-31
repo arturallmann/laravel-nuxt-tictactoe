@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html/laravel-server
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./laravel-server:/var/www/html/laravel-server
       - ./laravel-server/database:/var/www/html/laravel-server/database
