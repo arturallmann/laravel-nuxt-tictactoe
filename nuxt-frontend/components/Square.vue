@@ -23,8 +23,8 @@ export default {
 
 <style scoped>
 .square {
-  width: 200px;
-  height: 200px;
+  width: 12.5rem;
+  height: 12.5rem;
   background-color: #A6FFA1;
   border: 1px solid #000;
   display: flex;

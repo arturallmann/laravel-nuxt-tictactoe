@@ -4,7 +4,7 @@
     <ul v-if="games && games.length">
       <li v-for="game in games" :key="game.id">
         <div class="history-item">
-          <p>Game State: {{ game.game_state }}</p>
+          <p>Result: {{ game.game_state }}</p>
           <p v-if="game.winner">Winner: {{ game.winner }}</p>
           <p v-else></p>
           <p>Created At: {{ new Date(game.created_at).toLocaleString() }}</p>
@@ -15,19 +15,26 @@
     <p v-else-if="error">{{ error.message }}</p>
   </div>
 </template>
+
 <script setup>
 const {
   data,
   pending: isFetching,
   error,
-} = useFetch('http://localhost:8000/api/games');
+} = useFetch('http://localhost:8000/api/games', {
+  method: 'GET',
+});
 const games = computed(() => data.value?.games || []);
 </script>
+
 <style scoped>
 .games-history {
   margin: 20px;
-  max-height: 80%;
+  max-height: 80vh;
   overflow-y: scroll;
+}
+.games-history p {
+  max-width: 20vw;
 }
 .history-item {
   border: 1px solid black;
@@ -38,7 +45,9 @@ const games = computed(() => data.value?.games || []);
   padding-left: 5px;
   color: black;
 }
-
+h1 {
+  color: black;
+}
 ul {
   list-style-type: none;
   padding: 0;

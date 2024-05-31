@@ -1,0 +1,35 @@
+version: "3.11"
+services:
+  laravel:
+    build:
+      context: ./laravel-server
+      dockerfile: Dockerfile
+    image: laravel-server
+    container_name: laravel-server
+    restart: unless-stopped
+    working_dir: /var/www/html/laravel-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./laravel-server:/var/www/html/laravel-server
+      - ./laravel-server/database:/var/www/html/laravel-server/database
+
+    networks:
+      - app-network
+  nuxt:
+    build:
+      context: ./nuxt-frontend
+      dockerfile: Dockerfile
+    image: nuxt-app
+    container_name: nuxt-app
+    restart: unless-stopped
+    working_dir: /usr/src/nuxt-app
+    volumes:
+      - ./nuxt-frontend:/usr/src/nuxt-app
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
