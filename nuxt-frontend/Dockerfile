@@ -1,21 +1,18 @@
-FROM node:20.14.0-alpine
+# select node image
+FROM node:20-alpine
 
 # create destination directory
-RUN mkdir -p /usr/src/nuxt-app
-WORKDIR /usr/src/nuxt-app
+WORKDIR /app
 
-# update and install dependency
-RUN apk update && apk upgrade
-RUN apk add git
-
-COPY . /usr/src/nuxt-app/
+# copies package.json and package-lock.json to the container
+COPY package*.json ./
 RUN npm install
+# copies nuxt files to container
+COPY . .
+# builds the app
 RUN npm run build
-
-
+# expose port 3000
 EXPOSE 3000
 
-ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=3000
-
-CMD npm run start
+# start app
+CMD ["npm", "start"]
