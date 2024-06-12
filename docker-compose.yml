@@ -4,28 +4,20 @@ services:
     build:
       context: ./laravel-server
       dockerfile: Dockerfile
-    image: laravel-server
-    container_name: laravel-server
-    restart: unless-stopped
-    working_dir: /var/www/html/laravel-server
     ports:
       - "8000:8000"
     volumes:
-      - ./laravel-server:/var/www/html/laravel-server
-      - ./laravel-server/database:/var/www/html/laravel-server/database
-
+      - server:/var/www/html
     networks:
       - app-network
+    environment:
+      - DB_CONNECTION=sqlite
   nuxt:
     build:
       context: ./nuxt-frontend
       dockerfile: Dockerfile
-    image: nuxt-app
-    container_name: nuxt-app
-    restart: unless-stopped
-    working_dir: /usr/src/nuxt-app
     volumes:
-      - ./nuxt-frontend:/usr/src/nuxt-app
+      - app:/app
     ports:
       - "3000:3000"
     networks:
@@ -33,3 +25,7 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  app:
+  server:
