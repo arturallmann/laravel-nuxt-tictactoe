@@ -11,6 +11,7 @@ services:
       replicas: 3
       restart_policy:
         condition: on-failure
+
     networks:
       - app-network
     environment:
