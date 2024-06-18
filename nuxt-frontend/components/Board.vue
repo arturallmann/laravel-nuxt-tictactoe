@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     handleSquareClick(index) {
-      console.log(`Square click handled: ${index}`);
       if (
         this.squares[index] === '' &&
         !this.boardDisabled &&
@@ -72,7 +71,6 @@ export default {
       this.boardDisabled = true;
       if (!winner) {
         this.gameState = 'Draw!';
-        console.log('draw!');
         this.postGame('player', 'computer', 'draw', null);
       } else if (winner) {
         this.gameState = winner + ' Wins!';
