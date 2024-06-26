@@ -12,7 +12,6 @@
       </li>
     </ul>
     <p v-else-if="isFetching">Loading games...</p>
-    <p v-else-if="error">{{ error.message }}</p>
   </div>
 </template>
 
@@ -21,9 +20,7 @@ const {
   data,
   pending: isFetching,
   error,
-} = useFetch('http://localhost:8000/api/games', {
-  method: 'GET',
-});
+} = useFetch('http://localhost/api/games');
 const games = computed(() => data.value?.games || []);
 </script>
 

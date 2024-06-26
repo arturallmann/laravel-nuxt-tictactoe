@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     handleSquareClick(index) {
-      console.log(`Square click handled: ${index}`);
       if (
         this.squares[index] === '' &&
         !this.boardDisabled &&
@@ -72,7 +71,6 @@ export default {
       this.boardDisabled = true;
       if (!winner) {
         this.gameState = 'Draw!';
-        console.log('draw!');
         this.postGame('player', 'computer', 'draw', null);
       } else if (winner) {
         this.gameState = winner + ' Wins!';
@@ -196,7 +194,7 @@ export default {
     },
     postGame(player_x, player_o, game_state, winner) {
       //currently disabled so database doesn't fill up
-      const { data } = useFetch(`http://localhost:8000/api/games`, {
+      const { data } = useFetch(`http://localhost/api/games`, {
         method: 'POST',
         body: {
           player_x: player_x,
